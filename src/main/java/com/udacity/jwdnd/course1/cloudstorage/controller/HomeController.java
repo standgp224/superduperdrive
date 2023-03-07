@@ -45,8 +45,12 @@ public class HomeController {
             String fileName = file.getOriginalFilename();
             String filePath = fileService.uploadFile(file, fileName);
 //            List<String> fileNames = (List<String>) model.getAttribute("fileNames");
-            model.addAttribute("message", "File uploaded successfully: " + filePath);
-            model.addAttribute("fileName", fileName);
+            if (filePath != null) {
+                model.addAttribute("message", "File uploaded successfully: " + filePath);
+                model.addAttribute("fileName", fileName);
+            } else {
+                model.addAttribute("message", "File already exits");
+            }
         } catch (IOException e) {
             model.addAttribute("message", "Failed to upload file: " + e.getMessage());
         }
