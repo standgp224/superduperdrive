@@ -1,6 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.services.UploadService;
+import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,7 +24,7 @@ import java.util.List;
 public class HomeController {
 
     @Autowired
-    UploadService uploadService;
+    FileService fileService;
 
     @Autowired
     UserService userService;
@@ -35,7 +35,7 @@ public class HomeController {
     @GetMapping()
     public String getHomeView(Authentication auth, Model model) {
         userId = userService.getExistedUserByName(auth.getName()).getUserId();
-        model.addAttribute("fileNames", uploadService.getFileNames(userId));
+        model.addAttribute("fileNames", fileService.getFileNames(userId));
         return "home";
     }
 
@@ -43,14 +43,20 @@ public class HomeController {
     public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
         try {
             String fileName = file.getOriginalFilename();
-            String filePath = uploadService.uploadFile(file, fileName);
-            List<String> fileNames = (List<String>) model.getAttribute("fileNames");
+            String filePath = fileService.uploadFile(file, fileName);
+//            List<String> fileNames = (List<String>) model.getAttribute("fileNames");
             model.addAttribute("message", "File uploaded successfully: " + filePath);
             model.addAttribute("fileName", fileName);
         } catch (IOException e) {
             model.addAttribute("message", "Failed to upload file: " + e.getMessage());
         }
-        return "home";
+        return "redirect:/home";
+    }
+
+    @PostMapping("/delete")
+    public String deleteUploadedFile() {
+
+        return "redirect:/home";
     }
 
 

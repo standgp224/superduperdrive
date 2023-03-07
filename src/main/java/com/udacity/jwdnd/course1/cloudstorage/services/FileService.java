@@ -19,7 +19,7 @@ import java.nio.file.Paths;
  * @version 1.0
  */
 @Service
-public class UploadService {
+public class FileService {
 
     @Autowired
     FileMapper fileMapper;
