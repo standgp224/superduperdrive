@@ -49,4 +49,5 @@ public class UserService {
     public User getExistedUserByName(String userName) {
         return userMapper.getUser(userName);
     }
+
 }

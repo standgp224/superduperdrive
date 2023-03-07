@@ -4,7 +4,7 @@ package com.udacity.jwdnd.course1.cloudstorage.model;
  * @author T.Q
  * @version 1.0
  */
-class Notes {
+public class Note {
     Integer noteId;
     String noteTitle;
     String noteDescription;
