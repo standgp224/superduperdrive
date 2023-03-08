@@ -16,11 +16,13 @@ public interface FileMapper {
     @Select("SELECT * FROM FILES WHERE fileName = #{fileName}")
     File getFile(String fileName);
 
+    @Select("SELECT * FROM FILES WHERE fileId = #{fileId}")
+    File getFileById(Integer fileId);
+
     @Select("SELECT filename FROM FILES WHERE userid = #{userId}")
     String[] getFileNames(int userId);
 
-    @Delete("DELETE FROM FILES WHERE fineName = #{fileName}")
+    @Delete("DELETE FROM FILES WHERE fileName = #{fileName}")
     void delete(String fileName);
-
 
 }

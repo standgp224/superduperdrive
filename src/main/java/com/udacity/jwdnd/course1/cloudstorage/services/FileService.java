@@ -4,9 +4,13 @@ import com.udacity.jwdnd.course1.cloudstorage.mapper.FileMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -56,9 +60,7 @@ public class FileService {
 
             return filePath.toString();
         }
-
     }
-
 
     public String[] getFileNames(int userId) {
         return fileMapper.getFileNames(userId);
@@ -67,4 +69,10 @@ public class FileService {
     public void deleteFileByName(String fileName) {
         fileMapper.delete(fileName);
     }
+
+    public File getFileByName(String fileName) {return fileMapper.getFile(fileName);}
+
+
+
+
 }
