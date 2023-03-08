@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,22 +42,26 @@ public class HomeController {
     }
 
     @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model, Authentication auth) {
         try {
             String fileName = file.getOriginalFilename();
             String filePath = fileService.uploadFile(file, fileName);
-//            List<String> fileNames = (List<String>) model.getAttribute("fileNames");
-            model.addAttribute("message", "File uploaded successfully: " + filePath);
-            model.addAttribute("fileName", fileName);
+            if (filePath != null) {
+                model.addAttribute("message", "File uploaded successfully: " + filePath);
+            } else {
+                model.addAttribute("message", "File already exists");
+            }
         } catch (IOException e) {
             model.addAttribute("message", "Failed to upload file: " + e.getMessage());
         }
-        return "redirect:/home";
+        userId = userService.getExistedUserByName(auth.getName()).getUserId();
+        model.addAttribute("fileNames", fileService.getFileNames(userId));
+        return "home";
     }
 
     @PostMapping("/delete")
-    public String deleteUploadedFile() {
-
+    public String deleteUploadedFile(@RequestParam("fileName") String fileName) {
+        fileService.deleteFileByName(fileName);
         return "redirect:/home";
     }
 

@@ -32,29 +32,39 @@ public class FileService {
     private String uploadDirectory;
 
     public String uploadFile(MultipartFile file, String fileName) throws IOException {
-        //upload file
-        Path uploadPath = Paths.get(uploadDirectory).toAbsolutePath().normalize();
-        Files.createDirectories(uploadPath);
-        Path filePath = uploadPath.resolve(fileName);
-        byte[] fileBytes = file.getBytes();
-        Files.write(filePath, fileBytes);
+        //check if the file exits already
+        if (fileMapper.getFile(fileName) != null) {
+            return null;
+        } else {
+            //upload file
+            Path uploadPath = Paths.get(uploadDirectory).toAbsolutePath().normalize();
+            Files.createDirectories(uploadPath);
+            Path filePath = uploadPath.resolve(fileName);
+            byte[] fileBytes = file.getBytes();
+            Files.write(filePath, fileBytes);
 
-        //save file detail into db
-        File newFile = new File();
-        newFile.setFileName(fileName);
-        newFile.setFileSize(file.getSize());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-        newFile.setUserId(userService.getExistedUserByName(userName).getUserId());
-        newFile.setFileData(fileBytes);
-        newFile.setContentType(file.getContentType());
-        fileMapper.insert(newFile);
+            //save file detail into db
+            File newFile = new File();
+            newFile.setFileName(fileName);
+            newFile.setFileSize(file.getSize());
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
+            newFile.setUserId(userService.getExistedUserByName(userName).getUserId());
+            newFile.setFileData(fileBytes);
+            newFile.setContentType(file.getContentType());
+            fileMapper.insert(newFile);
 
-        return filePath.toString();
+            return filePath.toString();
+        }
+
     }
-
 
     public String[] getFileNames(int userId) {
         return fileMapper.getFileNames(userId);
     }
+
+    public void deleteFileByName(String fileName) {
+        fileMapper.delete(fileName);
+    }
+
 }
