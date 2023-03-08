@@ -46,6 +46,7 @@ public class HomeController {
         try {
             String fileName = file.getOriginalFilename();
             String filePath = fileService.uploadFile(file, fileName);
+
             if (filePath != null) {
                 model.addAttribute("message", "File uploaded successfully: " + filePath);
             } else {
