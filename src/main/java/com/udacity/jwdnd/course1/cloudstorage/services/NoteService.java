@@ -9,7 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -36,14 +38,12 @@ public class NoteService {
         noteMapper.insert(newNote);
     }
 
-    public HashMap<String, String> getNoteContent(int userId) {
-        Note note = noteMapper.getNote(userId);
-        if (note != null) {
-            HashMap<String, String> noteContent = new HashMap<>();
-            noteContent.put("title", note.getNoteTitle());
-            noteContent.put("description", note.getNoteDescription());
-            return noteContent;
-        } else return null;
+    public ArrayList<Note> getNoteContent(int userId) {
+        return noteMapper.getNotes(userId);
+    }
+
+    public void deleteNoteById(Integer noteId) {
+        noteMapper.delete(noteId);
     }
 
 }

@@ -45,8 +45,7 @@ public class HomeController {
     public String getHomeView(Authentication auth, Model model) {
         userId = userService.getExistedUserByName(auth.getName()).getUserId();
         model.addAttribute("fileNames", fileService.getFileNames(userId));
-        model.addAttribute("title", noteService.getNoteContent(userId).get("title"));
-        model.addAttribute("description", noteService.getNoteContent(userId).get("description"));
+        model.addAttribute("notes", noteService.getNoteContent(userId));
         return "home";
     }
 
@@ -69,7 +68,7 @@ public class HomeController {
         return "home";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete-file")
     public String deleteUploadedFile(@RequestParam("fileName") String fileName) {
         fileService.deleteFileByName(fileName);
         return "redirect:/home";
@@ -84,15 +83,18 @@ public class HomeController {
                 .body(new ByteArrayResource(file.getFileData()));
     }
 
-
     @PostMapping("/note")
     public String createNote(@RequestParam("noteTitle") String title, @RequestParam("noteDescription") String description) {
         noteService.createNewNote(title, description);
         return "redirect:/home";
     }
 
-
-
-
+    @GetMapping("/delete-note/{noteId}")
+    public String deleteNote(@PathVariable Integer noteId, Authentication auth, Model model) {
+        noteService.deleteNoteById(noteId);
+        userId = userService.getExistedUserByName(auth.getName()).getUserId();
+        model.addAttribute("notes", noteService.getNoteContent(userId));
+        return "home";
+    }
 
 }
