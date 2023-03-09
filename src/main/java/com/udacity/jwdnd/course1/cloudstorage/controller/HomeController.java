@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
+import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -33,6 +34,9 @@ public class HomeController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    NoteService noteService;
 
     private int userId;
 
@@ -77,6 +81,13 @@ public class HomeController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(new ByteArrayResource(file.getFileData()));
     }
+
+    @GetMapping("/note")
+    public String createNote(@RequestParam("title") String title, @RequestParam("description") String description) {
+        noteService.createNewNote(title, description);
+    }
+
+
 
 
 
