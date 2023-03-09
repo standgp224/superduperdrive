@@ -82,13 +82,10 @@ public class HomeController {
                 .body(new ByteArrayResource(file.getFileData()));
     }
 
-    @GetMapping("/note")
-    public String createNote(@RequestParam("title") String title, @RequestParam("description") String description) {
-        noteService.createNewNote(title, description);
-    }
-
-
-
+//    @GetMapping("/note")
+//    public String createNote(@RequestParam("title") String title, @RequestParam("description") String description) {
+//        noteService.createNewNote(title, description);
+//    }
 
 
 }
