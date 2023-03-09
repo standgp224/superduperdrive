@@ -94,7 +94,7 @@ public class HomeController {
         noteService.deleteNoteById(noteId);
         userId = userService.getExistedUserByName(auth.getName()).getUserId();
         model.addAttribute("notes", noteService.getNoteContent(userId));
-        return "home";
+        return "redirect:/home";
     }
 
 }
