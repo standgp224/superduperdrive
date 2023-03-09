@@ -45,6 +45,8 @@ public class HomeController {
     public String getHomeView(Authentication auth, Model model) {
         userId = userService.getExistedUserByName(auth.getName()).getUserId();
         model.addAttribute("fileNames", fileService.getFileNames(userId));
+        model.addAttribute("title", noteService.getNoteContent(userId).get("title"));
+        model.addAttribute("description", noteService.getNoteContent(userId).get("description"));
         return "home";
     }
 
@@ -82,9 +84,10 @@ public class HomeController {
                 .body(new ByteArrayResource(file.getFileData()));
     }
 
-    @GetMapping("/note")
-    public String createNote(@RequestParam("title") String title, @RequestParam("description") String description) {
+    @PostMapping("/note")
+    public String createNote(@RequestParam("noteTitle") String title, @RequestParam("noteDescription") String description) {
         noteService.createNewNote(title, description);
+        return "redirect:/home";
     }
 
 
