@@ -85,7 +85,8 @@
                             <td>
                                 <button type="button" class="btn btn-success">Edit</button>
                                 <a class="btn btn-danger" id="note-delete"
-                                   th:href="@{/home/delete-note/{noteId}(noteId = ${note.getNoteId()})}">Delete</a>
+                                   th:href="@{/home/delete-note/{noteId}(noteId = ${note.getNoteId()})}"
+                                   onclick="event.stopPropagation()">Delete</a>
                             </td>
                             <th scope="row" th:text="${note.getNoteTitle()}">Example Note Title</th>
                             <td th:text="${note.getNoteDescription()}">Example Note Description </td>
@@ -208,6 +209,7 @@
             if (activeTab) {
                 $('.nav-tabs a[href="' + activeTab + '"]').tab('show');
             }
+
 
             // For opening the note modal
             function showNoteModal(noteId, noteTitle, noteDescription) {
