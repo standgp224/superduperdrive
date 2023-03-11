@@ -1,10 +1,14 @@
 package com.udacity.jwdnd.course1.cloudstorage.model;
 
+import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * @author T.Q
  * @version 1.0
  */
 public class Credentials {
+
     Integer credentialId;
     String url;
     String userName;
@@ -44,9 +48,7 @@ public class Credentials {
         this.key = key;
     }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getPassword() { return password; }
 
     public void setPassword(String password) {
         this.password = password;

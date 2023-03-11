@@ -45,6 +45,10 @@ public class EncryptionService {
             logger.error(e.getMessage());
         }
 
-        return new String(decryptedValue);
+        if (decryptedValue != null) {
+            return new String(decryptedValue);
+        }
+        else return "";
+
     }
 }

@@ -1,10 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
-import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
-import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
-import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
-import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import com.udacity.jwdnd.course1.cloudstorage.services.*;
 import org.apache.logging.log4j.util.PerformanceSensitive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -43,6 +40,9 @@ public class HomeController {
     @Autowired
     CredentialService credentialService;
 
+    @Autowired
+    EncryptionService encryptionService;
+
     private int userId;
 
 
@@ -52,6 +52,7 @@ public class HomeController {
         model.addAttribute("fileNames", fileService.getFileNames(userId));
         model.addAttribute("notes", noteService.getNoteContent(userId));
         model.addAttribute("credentials", credentialService.getCredentialsInfo(userId));
+        model.addAttribute("encryptionService", encryptionService);
         return "home";
     }
 
@@ -108,5 +109,15 @@ public class HomeController {
         credentialService.createOrUpdateCredentials(url, userName, password, id);
         return "redirect:/home";
     }
+
+    @GetMapping("/delete-credential/{credentialId}")
+    public String deleteCredentials(@PathVariable Integer credentialId, Authentication auth, Model model) {
+        credentialService.deleteCredentials(credentialId);
+        return "redirect:/home";
+    }
+
+
+
+
 
 }
