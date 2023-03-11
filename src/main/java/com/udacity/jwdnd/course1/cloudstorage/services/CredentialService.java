@@ -21,5 +21,12 @@ public class CredentialService {
         return credentialMapper.getCredentials(userId);
     }
 
+    public void createOrUpdateCredentials(String url, String userName, String password, String id) {
+        if (id == null || id.equals("")) {
+            Credentials newCredentials = new Credentials();
+            newCredentials.setUrl(url);
+        }
+    }
+
 
 }

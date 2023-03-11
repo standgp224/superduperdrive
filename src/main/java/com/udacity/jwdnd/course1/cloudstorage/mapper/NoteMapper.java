@@ -21,9 +21,6 @@ public interface NoteMapper {
     @Select("SELECT * FROM NOTES WHERE noteId = #{noteId}")
     Note getNoteById(int noteId);
 
-    @Select("SELECT noteTitle FROM NOTES WHERE userid = #{userId}")
-    String[] getNoteDescription(int userId);
-
     @Delete("DELETE FROM NOTES WHERE noteId = #{noteId}")
     void delete(int noteId);
 

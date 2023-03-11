@@ -5,6 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import org.apache.logging.log4j.util.PerformanceSensitive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -99,6 +100,12 @@ public class HomeController {
         noteService.deleteNoteById(noteId);
         userId = userService.getExistedUserByName(auth.getName()).getUserId();
         model.addAttribute("notes", noteService.getNoteContent(userId));
+        return "redirect:/home";
+    }
+
+    @PostMapping("/credential")
+    public String createCredential(@RequestParam("url") String url, @RequestParam("username") String userName, @RequestParam("password") String password, @RequestParam("credentialId") String id) {
+        credentialService.createOrUpdateCredentials(url, userName, password, id);
         return "redirect:/home";
     }
 
