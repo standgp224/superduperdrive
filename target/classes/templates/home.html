@@ -83,14 +83,14 @@
                         <tbody>
                         <tr th:each="note : ${notes}">
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
+                                <button type="button" class="btn btn-success" th:onclick="showNoteModal([[${note.getNoteId()}]], [[${note.getNoteTitle()}]], [[${note.getNoteDescription()}]])">Edit</button>
                                 <a class="btn btn-danger" id="note-delete"
                                    th:href="@{/home/delete-note/{noteId}(noteId = ${note.getNoteId()})}"
-                                   onclick="event.stopPropagation()">Delete</a>
+                                   >Delete</a>
                             </td>
                             <th scope="row" th:text="${note.getNoteTitle()}">Example Note Title</th>
                             <td th:text="${note.getNoteDescription()}">Example Note Description </td>
-                        </tr>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -142,14 +142,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="credential : ${credentials}">
                             <td>
                                 <button type="button" class="btn btn-success">Edit</button>
                                 <a class="btn btn-danger">Delete</a>
                             </td>
                             <th scope="row">Example Credential URL</th>
-                            <td>Example Credential Username</td>
-                            <td>Example Credential Password</td>
+                            <td th:text="${credential.getUserName()}">Example Credential Username</td>
+                            <td th:text="${credential.getPassword()}}">Example Credential Password</td>
                         </tr>
                         </tbody>
                     </table>

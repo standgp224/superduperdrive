@@ -28,15 +28,20 @@ public class NoteService {
     UserMapper userMapper;
 
 
-    public void createNewNote(String title, String description) {
-        Note newNote = new Note();
-        newNote.setNoteTitle(title);
-        newNote.setNoteDescription(description);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Integer userId = userMapper.getUser(authentication.getName()).getUserId();
-        newNote.setUserId(userId);
-        noteMapper.insert(newNote);
+    public void createOrUpdateNote(String title, String description, String id) {
+        if (id == null || id.equals("")) {
+            Note newNote = new Note();
+            newNote.setNoteTitle(title);
+            newNote.setNoteDescription(description);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Integer userId = userMapper.getUser(authentication.getName()).getUserId();
+            newNote.setUserId(userId);
+            noteMapper.insert(newNote);
+        } else {
+            noteMapper.updateNote(title, description, Integer.valueOf(id));
+        }
     }
+
 
     public ArrayList<Note> getNoteContent(int userId) {
         return noteMapper.getNotes(userId);

@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -38,6 +39,9 @@ public class HomeController {
     @Autowired
     NoteService noteService;
 
+    @Autowired
+    CredentialService credentialService;
+
     private int userId;
 
 
@@ -46,6 +50,7 @@ public class HomeController {
         userId = userService.getExistedUserByName(auth.getName()).getUserId();
         model.addAttribute("fileNames", fileService.getFileNames(userId));
         model.addAttribute("notes", noteService.getNoteContent(userId));
+        model.addAttribute("credentials", credentialService.getCredentialsInfo(userId));
         return "home";
     }
 
@@ -84,8 +89,8 @@ public class HomeController {
     }
 
     @PostMapping("/note")
-    public String createNote(@RequestParam("noteTitle") String title, @RequestParam("noteDescription") String description) {
-        noteService.createNewNote(title, description);
+    public String createNote(@RequestParam("noteTitle") String title, @RequestParam("noteDescription") String description, @RequestParam("noteId") String id) {
+        noteService.createOrUpdateNote(title, description, id);
         return "redirect:/home";
     }
 
