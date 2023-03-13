@@ -5,6 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,6 +32,8 @@ public class FileService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ResourceLoader resourceLoader;
 
     @Value("${file.upload.directory}")
     private String uploadDirectory;
@@ -67,12 +70,14 @@ public class FileService {
     }
 
     public void deleteFileByName(String fileName) {
+        Path uploadPath = Paths.get(uploadDirectory).toAbsolutePath().normalize();
+        java.io.File file = new java.io.File(uploadPath.resolve(fileName).toString());
+        if (file.exists()) {
+            file.delete();
+        }
         fileMapper.delete(fileName);
     }
 
     public File getFileByName(String fileName) {return fileMapper.getFile(fileName);}
-
-
-
 
 }
