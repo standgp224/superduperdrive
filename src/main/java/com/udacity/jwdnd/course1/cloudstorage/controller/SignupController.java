@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author T.Q
@@ -23,16 +24,22 @@ public class SignupController {
     }
 
     @PostMapping()
-    public String signup(Model model, @ModelAttribute User user) {
+    public String signup(Model model, @ModelAttribute User user, RedirectAttributes redirectAttributes) {
         if (userService.findExistedUser(user)) {
             model.addAttribute("errorMessage", true);
+            return "signup";
         } else {
             int userCreatedId = userService.createUser(user);
             if (userCreatedId > 0) {
-                model.addAttribute("validSignup", true);
-            } else model.addAttribute("errorMessage", true);
+                redirectAttributes.addFlashAttribute("validSignup", true);
+                return "redirect:/login";
+            } else {
+                model.addAttribute("errorMessage", true);
+                return "signup";
+            }
+
         }
-        return "signup";
+
     }
 
 }

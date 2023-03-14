@@ -5,10 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -19,24 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/login")
 public class LoginController {
 
+    @Autowired
+    UserService userService;
+
     @GetMapping
-    public String getLoginPage(@RequestParam(value = "error", required = false) String error,
-                               @RequestParam(value = "logout", required = false) String logout, Model model, RedirectAttributes redirectAttributes) {
-        if (error != null) {
-            redirectAttributes.addFlashAttribute("validLogin", true);
-            return "redirect:/login";
-        }
-        if (logout != null) {
-            redirectAttributes.addFlashAttribute("loggedOut", true);
-            return "redirect:/login";
-        }
+    public String getLoginPage(Model model, @ModelAttribute User user) {
+
         return "login";
     }
-//
-//    @PostMapping String _login(Model model, @RequestParam("username") String username,
-//                               @RequestParam("password") String password) {
-//
-//    }
-
-
 }

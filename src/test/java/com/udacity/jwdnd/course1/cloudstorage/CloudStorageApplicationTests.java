@@ -50,9 +50,8 @@ class CloudStorageApplicationTests {
 	 **/
 	private void doMockSignUp(String firstName, String lastName, String userName, String password){
 		// Create a dummy account for logging in later.
-
 		// Visit the sign-up page.
-		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 5);
 		driver.get("http://localhost:" + this.port + "/signup");
 		webDriverWait.until(ExpectedConditions.titleContains("Sign Up"));
 		

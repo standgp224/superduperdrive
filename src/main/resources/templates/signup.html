@@ -15,10 +15,10 @@
     </div>
 
     <h1 class="display-5">Sign Up</h1>
-    <form action="#" th:action="@{/signup}" method="POST">
-        <div th:if="${validSignup}" id="success-msg" class="alert alert-dark">
-            You successfully signed up! Please wait while transferring to the <a>login</a> page.
-        </div>
+    <form  th:action="@{/signup}" method="POST">
+<!--        <div th:if="${validSignup}" id="success-msg" class="alert alert-dark">-->
+<!--            You successfully signed up!-->
+<!--        </div>-->
         <div th:if="${errorMessage}" class="alert alert-danger">
             <span>The username exists, please change.</span>
         </div>

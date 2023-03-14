@@ -72,7 +72,7 @@ public class HomeController {
         }
         userId = userService.getExistedUserByName(auth.getName()).getUserId();
         model.addAttribute("fileNames", fileService.getFileNames(userId));
-        return "home";
+        return "redirect:/home";
     }
 
     @PostMapping("/delete-file")
