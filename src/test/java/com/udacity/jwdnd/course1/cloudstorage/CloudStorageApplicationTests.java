@@ -13,6 +13,8 @@ import java.io.File;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CloudStorageApplicationTests {
 
+	public static final String[] username = {"timsss", "allensss", "pagesss", "dukesss", "annasss", "willsss", "kensss", "johnsss", "wonsss", "evesss", "sunsss"};
+
 	@LocalServerPort
 	private int port;
 
@@ -28,12 +30,12 @@ class CloudStorageApplicationTests {
 		this.driver = new ChromeDriver();
 	}
 
-//	@AfterEach
-//	public void afterEach() {
-//		if (this.driver != null) {
-//			driver.quit();
-//		}
-//	}
+	@AfterEach
+	public void afterEach() {
+		if (this.driver != null) {
+			driver.quit();
+		}
+	}
 
 	@Test
 	public void getLoginPage() {
@@ -82,6 +84,11 @@ class CloudStorageApplicationTests {
 		// You may have to modify the element "success-msg" and the sign-up 
 		// success message below depending on the rest of your code.
 		*/
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		Assertions.assertTrue(driver.findElement(By.id("success-msg")).getText().contains("You successfully signed up!"));
 	}
 
@@ -129,7 +136,7 @@ class CloudStorageApplicationTests {
 	@Test
 	public void testRedirection() {
 		// Create a test account
-		doMockSignUp("sfdasdffds","Test","dfdfdf","123");
+		doMockSignUp("sfdasdffds","Test",username[0], "123");
 		// Check if we have been redirected to the log in page.
 		Assertions.assertEquals("http://localhost:" + this.port + "/login", driver.getCurrentUrl());
 	}
@@ -149,8 +156,8 @@ class CloudStorageApplicationTests {
 	@Test
 	public void testBadUrl() {
 		// Create a test account
-		doMockSignUp("URL","Test","UT2ss2s","123");
-		doLogIn("UT", "123");
+		doMockSignUp("URL","Test",username[1], "123");
+		doLogIn(username[1], "123");
 		
 		// Try to access a random made-up URL.
 		driver.get("http://localhost:" + this.port + "/some-random-page");
@@ -173,8 +180,8 @@ class CloudStorageApplicationTests {
 	@Test
 	public void testLargeUpload() {
 		// Create a test account
-		doMockSignUp("Large File","Test","LFTsdfsasa","123");
-		doLogIn("LFTsdfsasa", "123");
+		doMockSignUp("Large File","Test",username[2], "123");
+		doLogIn(username[2], "123");
 
 		// Try to upload an arbitrary large file
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
@@ -218,8 +225,8 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void testLoginAndLogout() {
-		doMockSignUp("login&out","Test","abcdefgaab","123");
-		doLogIn("abcdefgaab", "123");
+		doMockSignUp("login&out","Test",username[3], "123");
+		doLogIn(username[3], "123");
 		Assertions.assertEquals("Home", driver.getTitle());
 
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
@@ -232,7 +239,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void testNote() {
-		createNewNote();
+		createNewNote(username[4]);
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
 		Assertions.assertTrue(driver.getPageSource().contains("hello"));
@@ -240,9 +247,9 @@ class CloudStorageApplicationTests {
 
 	}
 
-	public void createNewNote() {
-		doMockSignUp("note","Test","sssssssfsf","123");
-		doLogIn("sssssssfsf", "123");
+	public void createNewNote(String name) {
+		doMockSignUp("note","Test",name,"123");
+		doLogIn(name, "123");
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-notes-tab")));
 		WebElement noteTab = driver.findElement(By.id("nav-notes-tab"));
@@ -269,7 +276,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void testNoteEdit() {
-		createNewNote();
+		createNewNote(username[5]);
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("note-edit")));
@@ -298,7 +305,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void testDeleteNote() throws InterruptedException {
-		createNewNote();
+		createNewNote(username[6]);
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
 		Thread.sleep(2000);
@@ -319,7 +326,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void testCredentials() throws InterruptedException {
-		createCredentials();
+		createCredentials(username[7]);
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
 		Assertions.assertTrue(driver.getPageSource().contains("www.google.com"));
@@ -328,9 +335,9 @@ class CloudStorageApplicationTests {
 		Assertions.assertFalse(driver.findElement(By.id("encrypted-password")).getText().equals(driver.findElement(By.id("credential-password")).getText()));
 	}
 
-	public void createCredentials() {
-		doMockSignUp("credentials","Test","asssssfss","123");
-		doLogIn("asssssfss", "123");
+	public void createCredentials(String name) {
+		doMockSignUp("credentials","Test", name, "123");
+		doLogIn(name, "123");
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
 		webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-credentials-tab")));
 		WebElement noteTab = driver.findElement(By.id("nav-credentials-tab"));
@@ -362,7 +369,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void testCredentialsEdit() {
-		createCredentials();
+		createCredentials(username[8]);
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
 
@@ -397,7 +404,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void testCredentialDelete() throws InterruptedException {
-		createCredentials();
+		createCredentials(username[9]);
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 2);
 		webDriverWait.until(ExpectedConditions.titleContains("Home"));
 		Thread.sleep(2000);
